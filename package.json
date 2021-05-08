@@ -1,0 +1,48 @@
+{
+  "name": "reabank-syntax-highlighting",
+  "displayName": "Reabank Syntax Highlighting",
+  "description": "Syntax highlighting for Reabank files",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.56.0"
+  },
+  "license": "ISC",
+  "publisher": "adalinesimonian",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#333",
+    "theme": "dark"
+  },
+  "author": {
+    "name": "Adaline Simonian",
+    "email": "adalinesimonian@gmail.com",
+    "url": "https://github.com/adalinesimonian"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adalinesimonian/reabank-syntax-highlighting.git"
+  },
+  "homepage": "https://github.com/adalinesimonian/reaticulate-number-banks#readme",
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "reaper",
+    "reaticulate",
+    "daw",
+    "audio production"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "reabank",
+      "aliases": ["Reabank", "reabank"],
+      "extensions": [".reabank"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "reabank",
+      "scopeName": "source.reabank",
+      "path": "./syntaxes/reabank.tmLanguage.json"
+    }]
+  }
+}

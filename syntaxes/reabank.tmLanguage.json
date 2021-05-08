@@ -1,0 +1,174 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Reabank",
+  "patterns": [
+    { "include": "#program-line" },
+    { "include": "#bank-line" },
+    { "include": "#reaticulate-program-def" },
+    { "include": "#reaticulate-annotation" },
+    { "include": "#comments" }
+  ],
+  "repository": {
+    "bank-line": {
+      "match": "^(Bank)\\s+(\\d+)\\s+(\\d+)(?:\\s+([^\r?\n]+))",
+      "captures": {
+        "1": { "name": "entity.name.tag.bank.reabank" },
+        "2": { "name": "constant.numeric.msb.reabank" },
+        "3": { "name": "constant.numeric.lsb.reabank" },
+        "4": { "name": "entity.name.type.bank.reabank" }
+      }
+    },
+    "program-line": {
+      "match": "^(\\d+)(?:\\s+([^\r?\n]+))",
+      "captures": {
+        "1": { "name": "constant.numeric.program.reabank" },
+        "2": { "name": "entity.name.other.program" }
+      }
+    },
+    "reaticulate-program-def": {
+      "match": "^(//#prog)\\s+(\\d+)(?:\\s+([^\r?\n]+))",
+      "captures": {
+        "1": { "name": "meta.preprocessor.reaticulate-program-def.reabank" },
+        "2": { "name": "constant.numeric.program.reabank" },
+        "3": { "name": "entity.name.other.program" }
+      }
+    },
+    "reaticulate-annotation": {
+      "begin": "^//!",
+      "end": "(?=\\r?\\n)",
+      "beginCaptures": {
+        "0": { "name": "meta.preprocessor.reaticulate-annotation.reabank" }
+      },
+      "patterns": [
+        {"include": "#attribute"},
+        {"include": "#output-events"}
+      ]
+    },
+    "attribute": {
+      "patterns": [
+        {
+          "name": "entity.attribute.reabank",
+          "begin": "(?<=\\b)(i|n|c|f|g|m|n|chase|clone|off|spacer|transpose|velocity|pitchrange|velrange)(?==)",
+          "beginCaptures": {
+            "0": { "name": "entity.other.attribute-name.reabank" }
+          },
+          "end": "(?=(\\s*+[^=\\s]|\\r?\\n))",
+          "patterns": [{ "include": "#attribute-interior" }]
+        }
+      ]
+    },
+    "output-events": {
+      "patterns": [{
+        "name": "entity.attribute.reabank",
+        "begin": "(?<=\\b)o(?==)",
+        "beginCaptures": {
+          "0": { "name": "entity.other.attribute-name.reabank" }
+        },
+        "end": "(?=(\\s*+[^=\\s]|\\r?\\n))",
+        "patterns": [
+          {"include": "#output-events-interior"}
+        ]
+      }]
+    },
+    "attribute-interior": {
+      "patterns": [{
+        "begin": "=",
+        "beginCaptures": {
+          "0": {"name": "punctuation.separator.key-value.reabank"}
+        },
+        "end": "(?=\\s)",
+        "patterns": [
+          { "include": "#strings" },
+          {
+            "name": "entity.name.variable.enum-member.reabank",
+            "match": "([^\\s\"'=<>`/])+"
+          }
+        ]
+      }]
+    },
+    "output-events-interior": {
+      "patterns": [{
+        "begin": "=",
+        "beginCaptures": {
+          "0": {"name": "punctuation.separator.key-value.reabank"}
+        },
+        "end": "(?=\\s)",
+        "patterns": [
+          { "include": "#output-event" },
+          {
+            "match": "/",
+            "name": "punctuation.separator.output-events.reabank"
+          }
+        ]
+      }]
+    },
+    "output-event": {
+      "patterns": [
+        {
+          "match": "(?<=[=/])-",
+          "name": "entity.name.operator.noroute.reabank"
+        },
+        {
+          "match": "(?<=[=/]-?)(program|cc|note|note-hold|pitch|art)(?=(@|\\.|:|/|\\s))",
+          "name": "entity.name.function.output-event-type.reabank"
+        },
+        {
+          "match": "(?<=[=/]-?(?:[a-z-]+)?)(@)(\\d+)",
+          "captures": {
+            "1": {"name": "entity.name.operator.channel.reabank"},
+            "2": {"name": "constant.numeric.channel.reabank"}
+          }
+        },
+        {
+          "match": "(?<=[=/]-?(?:[a-z-]+)?(?:@\\d+)?)(\\.)(\\d+)",
+          "captures": {
+            "1": {"name": "entity.name.operator.bus.reabank"},
+            "2": {"name": "constant.numeric.bus.reabank"}
+          }
+        },
+        {
+          "match": "(?<=[=/]-?(?:[a-z-]+)?(?:@\\d+)?(?:\\.\\d+)?)(:)(\\d+)(?:(,)(\\d+))?",
+          "captures": {
+            "1": {"name": "entity.name.operator.arguments.reabank"},
+            "2": {"name": "constant.numeric.argument.reabank"},
+            "3": {"name": "punctuation.separator.output-event-arguments.reabank"},
+            "4": {"name": "constant.numeric.argument.reabank"}
+          }
+        },
+        {
+          "match": "(?<=[=/]-?(?:[a-z-]+)?(?:@\\d+)?(?:\\.\\d+)?(?::\\d+(?:,\\d+)?)?)(%)(\\d+)",
+          "captures": {
+            "1": {"name": "entity.name.operator.filter-program.reabank"},
+            "2": {"name": "constant.numeric.filter-program.reabank"}
+          }
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [{
+        "name": "comment.line.double-slash.reabank",
+        "match": "//([^!#\\r\\n][^\\r\\n]*)?\\r?\\n"
+      }]
+    },
+    "strings": {
+      "name": "string.quoted.double.reabank",
+      "begin": "\"",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.reabank"
+        }
+      },
+      "end": "(\"|(?=\\r?\\n))",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.reabank"
+        }
+      },
+      "patterns": [{
+        "match": "\\\\.",
+        "name": "constant.character.escape.ini"
+      }]
+    }
+  },
+  "scopeName": "source.reabank"
+}
