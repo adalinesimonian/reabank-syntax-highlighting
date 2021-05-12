@@ -1,9 +1,14 @@
 # Change Log
 
-All notable changes to the "reabank-support" extension will be documented in this file.
+All notable changes to the "reabank-syntax-highlighting" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## 1.1.0
 
-## [Unreleased]
+- Added highlighting for illegal MIDI bytes out of range (0-127).  
+![Screenshot of invalid MIDI byte highlighting](invalid-byte-screenshot.png)
+- Added `fileTypes` key to grammar so that the grammar may be used in any other compatible editor.
 
-- Initial release
+## 1.0.0
+
+Initial release of reabank-syntax-highlighting.
+
