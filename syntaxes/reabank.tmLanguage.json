@@ -11,7 +11,15 @@
   ],
   "repository": {
     "bank-line": {
-      "match": "^(Bank)\\s+(\\d+)\\s+(\\d+)(?:\\s+([^\r?\n]+))",
+      "patterns": [
+        { "include": "#valid-bank-line" },
+        { "include": "#invalid-bank-line-msb" },
+        { "include": "#invalid-bank-line-lsb" },
+        { "include": "#invalid-bank-line" }
+      ]
+    },
+    "valid-bank-line": {
+      "match": "^(Bank)\\s+(0?[0-9]?[0-9]|1[01][0-9]|12[0-7])\\s+(0?[0-9]?[0-9]|1[01][0-9]|12[0-7])(?:\\s+([^\r?\n]+))",
       "captures": {
         "1": { "name": "entity.name.tag.bank.reabank" },
         "2": { "name": "constant.numeric.msb.reabank" },
@@ -19,18 +27,72 @@
         "4": { "name": "entity.name.type.bank.reabank" }
       }
     },
+    "invalid-bank-line-msb": {
+      "match": "^(Bank)\\s+(\\d+)\\s+(0?[0-9]?[0-9]|1[01][0-9]|12[0-7])(?:\\s+([^\r?\n]+))",
+      "captures": {
+        "1": { "name": "entity.name.tag.bank.reabank" },
+        "2": { "name": "invalid.illegal.bad-midi-byte.reabank" },
+        "3": { "name": "constant.numeric.lsb.reabank" },
+        "4": { "name": "entity.name.type.bank.reabank" }
+      }
+    },
+    "invalid-bank-line-lsb": {
+      "match": "^(Bank)\\s+(0?[0-9]?[0-9]|1[01][0-9]|12[0-7])\\s+(\\d+)(?:\\s+([^\r?\n]+))",
+      "captures": {
+        "1": { "name": "entity.name.tag.bank.reabank" },
+        "2": { "name": "constant.numeric.msb.reabank" },
+        "3": { "name": "invalid.illegal.bad-midi-byte.reabank" },
+        "4": { "name": "entity.name.type.bank.reabank" }
+      }
+    },
+    "invalid-bank-line": {
+      "match": "^(Bank)\\s+(\\d+)\\s+(\\d+)(?:\\s+([^\r?\n]+))",
+      "captures": {
+        "1": { "name": "entity.name.tag.bank.reabank" },
+        "2": { "name": "invalid.illegal.bad-midi-byte.reabank" },
+        "3": { "name": "invalid.illegal.bad-midi-byte.reabank" },
+        "4": { "name": "entity.name.type.bank.reabank" }
+      }
+    },
     "program-line": {
-      "match": "^(\\d+)(?:\\s+([^\r?\n]+))",
+      "patterns": [
+        { "include": "#valid-program-line" },
+        { "include": "#invalid-program-line" }
+      ]
+    },
+    "valid-program-line": {
+      "match": "^(0?[0-9]?[0-9]|1[01][0-9]|12[0-7])(?:\\s+([^\r?\n]+))",
       "captures": {
         "1": { "name": "constant.numeric.program.reabank" },
         "2": { "name": "entity.name.other.program" }
       }
     },
+    "invalid-program-line": {
+      "match": "^(\\d+)(?:\\s+([^\r?\n]+))",
+      "captures": {
+        "1": { "name": "invalid.illegal.bad-midi-byte.reabank" },
+        "2": { "name": "entity.name.other.program" }
+      }
+    },
     "reaticulate-program-def": {
-      "match": "^(//#prog)\\s+(\\d+)(?:\\s+([^\r?\n]+))",
+      "patterns": [
+        { "include": "#valid-reaticulate-program-def" },
+        { "include": "#invalid-reaticulate-program-def" }
+      ]
+    },
+    "valid-reaticulate-program-def": {
+      "match": "^(//#prog)\\s+(0?[0-9]?[0-9]|1[01][0-9]|12[0-7])(?:\\s+([^\r?\n]+))",
       "captures": {
         "1": { "name": "meta.preprocessor.reaticulate-program-def.reabank" },
         "2": { "name": "constant.numeric.program.reabank" },
+        "3": { "name": "entity.name.other.program" }
+      }
+    },
+    "invalid-reaticulate-program-def": {
+      "match": "^(//#prog)\\s+(\\d+)(?:\\s+([^\r?\n]+))",
+      "captures": {
+        "1": { "name": "meta.preprocessor.reaticulate-program-def.reabank" },
+        "2": { "name": "invalid.illegal.bad-midi-byte.reabank" },
         "3": { "name": "entity.name.other.program" }
       }
     },
