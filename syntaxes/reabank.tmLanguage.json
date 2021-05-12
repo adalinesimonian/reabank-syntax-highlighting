@@ -1,6 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Reabank",
+  "fileTypes": ["reabank"],
   "patterns": [
     { "include": "#program-line" },
     { "include": "#bank-line" },
